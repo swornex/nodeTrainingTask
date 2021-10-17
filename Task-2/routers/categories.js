@@ -4,15 +4,20 @@ const router = express.Router();
 
 let categories = [
     { id: 1, title: "Romance", createdDate: new Date() },
-    { id: 2, title: "Horror", createdDate: new Date() }
+    { id: 2, title: "Horror", createdDate: new Date() },
+    { id: 3, title: "Fiction", createdDate: new Date() },
+    { id: 4, title: "Biography", createdDate: new Date() }
 ];
 
+//Create category
 router.post("/categories", (request, response) => {
+    //took keys from request.body
     const properties = Object.keys(request.body);
+    //checked whether the body is empty or not.
     if (properties.length < 1) {
         return response.status(400).send("Body cannot be empty");
     }
-
+    //checked whether the id is already used
     const category = categories.find(
         (category) => request.body.id == category.id
     );
@@ -20,17 +25,21 @@ router.post("/categories", (request, response) => {
     if (category) {
         return response.status(400).send("ID already in use.");
     }
-
+    // added current date
     request.body.createdDate = new Date();
+    //category added in array
     categories.push(request.body);
     response.status(201).send(categories);
 });
 
+//displayed or read all categories
 router.get("/categories", (request, response) => {
     response.send(categories);
 });
 
+//displayed categories using id
 router.get("/categories/:id", (request, response) => {
+    //checked whether id exists or not
     const category = categories.find(
         (category) => request.params.id == category.id
     );
@@ -41,12 +50,15 @@ router.get("/categories/:id", (request, response) => {
     response.send(category);
 });
 
+//updated category
 router.patch("/categories/:id", (request, response) => {
     const allowedProperties = ["title"];
     const properties = Object.keys(request.body);
+    //filtered properties
     const isValid = properties.every((property) =>
         allowedProperties.includes(property)
     );
+    //checked whether body is empty or not and checked whether the properties are valid inputs.
     if (!isValid || properties.length <= 0) {
         return response.status(400).send("Invalid Input.");
     }
@@ -62,6 +74,7 @@ router.patch("/categories/:id", (request, response) => {
     response.send(categories[index]);
 });
 
+//deleted category using id
 router.delete("/categories/:id", (request, response) => {
     try {
         const index = categories.findIndex(
@@ -78,4 +91,5 @@ router.delete("/categories/:id", (request, response) => {
     }
 });
 
-module.exports = router;
+//exported router and category
+module.exports = { router, categories };

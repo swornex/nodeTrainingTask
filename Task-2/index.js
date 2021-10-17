@@ -1,11 +1,13 @@
 const express = require("express");
-const { allowedNodeEnvironmentFlags } = require("process");
 const app = express();
 
-const router = require("./routers/categories");
+//imported custom router
+const { router: categoriesRouter } = require("./routers/categories");
+const booksRouter = require("./routers/books");
 
 app.use(express.json());
-app.use(router);
+app.use(categoriesRouter);
+app.use(booksRouter);
 
 const port = process.env.PORT || 3000;
 
