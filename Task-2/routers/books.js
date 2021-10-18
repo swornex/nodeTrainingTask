@@ -1,7 +1,7 @@
 const express = require("express");
 
 //imported from category
-const { categories } = require("./categories");
+const { categories } = require("../controller/control");
 
 const router = express.Router();
 

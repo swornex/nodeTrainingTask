@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 
 //imported custom router
-const { router: categoriesRouter } = require("./routers/categories");
+const categoriesRouter = require("./routers/categories");
 const booksRouter = require("./routers/books");
 
 app.use(express.json());
